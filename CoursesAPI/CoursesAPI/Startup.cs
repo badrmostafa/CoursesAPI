@@ -74,6 +74,8 @@ namespace CoursesAPI
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
                 };
             });
+
+            services.AddCors(options => options.AddDefaultPolicy(builder => builder.AllowAnyOrigin()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,7 +92,10 @@ namespace CoursesAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {
